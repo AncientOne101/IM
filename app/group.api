@@ -1,0 +1,98 @@
+syntax = "v1"
+
+type GroupRequest {
+}
+type Response {
+    Message string `json:"message"`
+}
+
+type GroupAddRequest {
+    Title string `json:"title"`
+    Description string `json:"description"`
+}
+
+type GroupEditRequest {
+    GroupId int64 `json:"group_id"`
+    Title string `json:"title"`
+    Description string `json:"description"`
+}
+
+type GroupDelRequest {
+    GroupId int64 `json:"group_id"`
+}
+
+type GroupJoinRequest {
+    GroupId int64 `json:"group_id"`
+    Note string `json:"note"`
+}
+
+type GroupOutRequest {
+    GroupId int64 `json:"group_id"`
+}
+
+type GroupRemoveRequest {
+    GroupId int64 `json:"group_id"`
+    UserId int64 `json:"user_id"`
+}
+
+type GroupJoinHandleRequest {
+    JoinId int64 `json:"join_id"`
+    ActionType int64 `json:"action_type"`
+}
+
+type Group {
+    Id int64 `json:"id"`
+    Title string `json:"title"`
+    Description string `json:"description"`
+    ChannelId string `json:"channel_id"`
+    IsManager int64 `json:"is_manager"`
+}
+
+type GroupListResponse {
+    List []Group `json:"list"`
+}
+type GroupSreachRequest {
+    Title string `json:"title"`
+}
+
+type GroupSreachResponse {
+    Id int64 `json:"id"`
+    Title string `json:"title"`
+    Description string `json:"description"`
+    IsJoin int64 `json:"is_join"`
+    Manager string `json:"manager"`
+}
+
+@server(
+    group: group
+    jwt: JwtAuth
+    middleware: AuthToken
+)
+service app-api {
+    @handler GroupSreach
+    post /group/search (GroupSreachRequest) returns (GroupSreachResponse)
+
+    @handler GroupAdd
+    post /group/add (GroupAddRequest) returns (Response)
+
+    @handler GroupEdit
+    post /group/edit (GroupEditRequest) returns (Response)
+
+    @handler GroupDel
+    post /group/del (GroupDelRequest) returns (Response)
+
+    @handler GroupJoin
+    post /group/join (GroupJoinRequest) returns (Response)
+
+    @handler GroupOut
+    post /group/out (GroupOutRequest) returns (Response)
+
+    @handler GroupJoinHandle
+    post /group/join/handle (GroupJoinHandleRequest) returns (Response)
+
+    @handler GroupRemove
+    post /group/remove (GroupJoinHandleRequest) returns (Response)
+
+    @handler GroupList
+    post /group/list (GroupRequest) returns (GroupListResponse)
+}

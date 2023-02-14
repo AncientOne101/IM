@@ -1,0 +1,6 @@
+syntax = "v1"
+
+import "user.api"
+import "friend.api"
+import "message.api"
+import "group.api"
